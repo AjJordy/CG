@@ -1,19 +1,22 @@
 "use strict";
 
-function criaCirculo(raio, resolucao){
-	return range(0,2*Math.PI,resolucao).map(angle => polar(raio,angle));
+function makeCircle(radius, resolution){
+	return range(0,2*Math.PI,resolution).map(angle => polar(angle,radius));
 }
 
-function range(inicio,fim,incremento){
-	let circulo = [];
-	for(i=inicio;i<fim;incremento){
-		circulo.push(i);
+function range(begin,end,resolution){
+	let circle = [];
+	let increment = 2*Math.PI/resolution; 	
+	for(let i=begin; i<end; i+=increment){
+		circle.push(i);
 	}
-	return circulo;
+	return circle;
 }
 
-function polar(){
-	
+function polar(angle,radius){
+	let x = Math.cos(angle) * radius;
+	let y = Math.sin(angle) * radius;
+	return [Math.round(x), Math.round(y)]
 }
 
-console.log(criaCirculo(1,4));
+console.log(makeCircle(1,4));
