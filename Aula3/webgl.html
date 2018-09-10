@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>webgl - Criação de contexto</title>
+	<meta charset="utf-8"/>
+</head>
+<body>
+	<h2 id="cab">Sem WebGL</h2>
+	<canvas id="canvas_id" style="border:1px solid black" width="500px" height="500px">
+		O seu browser não suporte o elemento canvas.
+	</canvas>
+	<script type="text/javascript">
+		"use strict";
+		let cab = document.getElementById("cab");
+		let canvas = document.getElementById("canvas_id");
+		let gl = canvas.getContext("webgl2"); // ou "webgl2"			
+
+		if(gl){
+			cab.innerHTML = "Suporta WebGL2";
+		}else{
+			let gl = canvas.getContext("webgl");
+			if(gl)
+				cab.innerHTML = "Suporta WebGL";
+		}	
+
+		gl.clearColor(0,0,0,1); // Defino cor de fundo ao apagar 
+		gl.clear(gl.COLOR_BUFFER_BIT); // Apago o fundo
+	</script>	
+</body>
+</html>
