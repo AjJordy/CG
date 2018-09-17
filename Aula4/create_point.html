@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>webgl - Criação de contexto</title>
+	<meta charset="utf-8"/>
+</head>
+<body>
+	<h2 id="cab">Sem WebGL</h2>
+	<canvas id="canvas_id" style="border:1px solid black" width="500px" height="500px">
+		O seu browser não suporte o elemento canvas.
+	</canvas>
+	<script type="text/javascript">
+		"use strict";
+		let cab = document.getElementById("cab");
+		let canvas = document.getElementById("canvas_id");
+		let gl = canvas.getContext("webgl2"); 			
+		if(gl){
+			cab.innerHTML = "Suporta WebGL2";
+		}else{
+			let gl = canvas.getContext("webgl");
+			if(gl)
+				cab.innerHTML = "Suporta WebGL";
+		}
+		// Limpo a tela	
+		gl.clearColor(0,0,0,1); // Defino cor de fundo ao apagar 
+		gl.clear(gl.COLOR_BUFFER_BIT); // Apago o fundo
+
+		// Vertex = Ponto com mais informação 
+		let vertex = gl.createShader(gl.VERTEX_SHADER);
+		gl.shaderSource(vertex,[
+				"void main(){",
+				"	gl_Position = vec4(0.,0.,0.,1.);", // x,y,z,h
+				"	gl_PointSize = 10.;",
+				"}"
+			].join('\n'));
+		gl.compileShader(vertex);
+
+		// Fragmento = Pixel com mais informações
+		let fragment = gl.createShader(gl.FRAGMENT_SHADER);
+		gl.shaderSource(fragment,[
+				"void main(){",
+				"	gl_FragColor = vec4(1.,1.,1.,1.);", // r,g,b,alfa
+				"}"
+			].join('\n'));
+		gl.compileShader(fragment);
+
+		// Cria o programa
+		let program = gl.createProgram();
+		gl.attachShader(program, vertex);
+		gl.attachShader(program, fragment);
+		gl.linkProgram(program);
+		gl.useProgram(program); // Usa o programa
+
+		// Rodar o programa
+		gl.drawArrays(gl.POINTS,0,1);
+
+	</script>	
+</body>
+</html>
