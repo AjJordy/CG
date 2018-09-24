@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>webgl - Criação de contexto</title>
+	<meta charset="utf-8"/>
+</head>
+<body>
+    <h2 id="cab">Sem WebGL</h2>
+    
+	<canvas id="canvas_id" style="border:1px solid black" width="500px" height="500px">
+		O seu browser não suporte o elemento canvas.
+    </canvas>
+    <script src='./shader.js'> </script>
+    <script id='vertex' type='x-shader/x-vertex'>
+        attribute vec3 pos;
+        void main(){            
+        	gl_Position = vec4(pos,1.); // x,y,z,h
+        	gl_PointSize = 10.;
+        }
+    </script>
+    <script id='fragment' type='x-shader/x-fragment'>
+        void main(){
+			gl_FragColor = vec4(1.,1.,1.,1.); // r,g,b,alfa
+		}
+    </script>
+
+	<script type="text/javascript">
+		"use strict";
+		let cab = document.getElementById("cab");
+		let canvas = document.getElementById("canvas_id");
+		let gl = canvas.getContext("webgl2"); 			
+		if(gl) cab.innerHTML = "Suporta WebGL2";
+		else{
+			let gl = canvas.getContext("webgl");
+			if(gl) cab.innerHTML = "Suporta WebGL";
+        }       
+        
+		// Limpo a tela	
+		gl.clearColor(0,0,0,1); // Defino cor de fundo ao apagar 
+		gl.clear(gl.COLOR_BUFFER_BIT); // Apago o fundo
+        
+        // Instancia o programa
+        let prog = new Program(gl,'vertex','fragment');
+        prog.get_locations(['pos']);
+        prog.use();
+
+        // Pipeline
+        let point = [0.5, 0.5, 0.5, 0, 0, 0, 1, -1, 0];
+        let vbo = gl.createBuffer(); // Buffer na GPU
+        gl.bindBuffer(gl.ARRAY_BUFFER,vbo); // Trouxe para o topo da maquina de estado
+        gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(point),gl.STATIC_DRAW); // Usar
+
+        gl.enableVertexAttribArray(prog['pos']); // Conecta com a variável
+        gl.vertexAttribPointer(prog['pos'], 3, gl.FLOAT, false, 0, 0);
+
+		// Rodar o programa
+        // gl.drawArrays(gl.POINTS, 0, 1);
+        // gl.drawArrays(gl.LINES, 0, 2);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+	</script>	
+</body>
+</html>
