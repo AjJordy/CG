@@ -51,10 +51,11 @@
         gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(point),gl.STATIC_DRAW); // Usar
 
         gl.enableVertexAttribArray(prog['pos']); // Conecta com a variável
-        gl.vertexAttribPointer(prog['pos'], 3, gl.FLOAT, false, 0, 0);
-
+        gl.vertexAttribPointer(prog['pos'], 3, gl.FLOAT, false, 0, 0); // vec3, FLOAT, false, stride(tamanho), offset(espaço)
+		
+		
 		// Rodar o programa
-        // gl.drawArrays(gl.POINTS, 0, 1);
+        // gl.drawArrays(gl.POINTS, 0, 1); // qtd. pontos
         // gl.drawArrays(gl.LINES, 0, 2);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
 
